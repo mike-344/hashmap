@@ -89,7 +89,44 @@ function linkedList(){
     }
 
 
-    return {append, prepend, size, getHead, getTail, at, toString, pop, contains, find}
+    const insertAt = (value, index) => {
+        if (index < 0 || index > length) {
+            throw new Error('Index out of bounds');
+        }
+        if (index === 0) {
+            prepend(value);
+        } else if (index === length) {
+            append(value);
+        } else {
+            const newNode = Node(value);
+            const previousNode = at(index - 1);
+            newNode.next = previousNode.next;
+            previousNode.next = newNode;
+            length++;
+        }
+    };
+
+    const removeAt = (index) => {
+        if (index < 0 || index >= length) {
+            throw new Error('Index out of bounds');
+        }
+        if (index === 0) {
+            head = head.next;
+            if (length === 1) {
+                tail = null;
+            }
+        } else {
+            const previousNode = at(index - 1);
+            previousNode.next = previousNode.next.next;
+            if (index === length - 1) {
+                tail = previousNode; // Update tail if removing the last element
+            }
+        }
+        length--;
+    };
+
+
+    return {append, prepend, size, getHead, getTail, at, toString, pop, contains, find, insertAt, removeAt}
 
 }
 
@@ -98,3 +135,5 @@ function Node(value = null, next = null){
 
 return {value, next}
 }
+
+export {linkedList}
